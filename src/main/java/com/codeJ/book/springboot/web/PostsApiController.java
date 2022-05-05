@@ -5,6 +5,7 @@ import com.codeJ.book.springboot.web.dto.PostsResponseDTO;
 import com.codeJ.book.springboot.web.dto.PostsSaveRequestDTO;
 import com.codeJ.book.springboot.web.dto.PostsUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -21,7 +22,8 @@ public class PostsApiController {
 
     @PutMapping("/api/v1/posts/{id}")
     public Long update(@PathVariable Long id,
-                       @RequestBody PostsUpdateRequestDTO requestDTO){
+                       @RequestBody PostsUpdateRequestDTO requestDTO
+                       ){
 
         return postsService.update(id,requestDTO);
     }
@@ -31,4 +33,17 @@ public class PostsApiController {
 
         return postsService.findById(id);
     }
+
+    @DeleteMapping("/api/v1/posts/{id}")
+    public Long delete(@PathVariable Long id){
+
+        postsService.delete(id);
+
+        return id;
+    }
+
+
+
+
+
 }

@@ -2,12 +2,18 @@ package com.codeJ.book.springboot.service.posts;
 
 import com.codeJ.book.springboot.domain.posts.Posts;
 import com.codeJ.book.springboot.domain.posts.PostsRepository;
+import com.codeJ.book.springboot.web.dto.PostsListResponseDTO;
 import com.codeJ.book.springboot.web.dto.PostsResponseDTO;
 import com.codeJ.book.springboot.web.dto.PostsSaveRequestDTO;
 import com.codeJ.book.springboot.web.dto.PostsUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
@@ -37,4 +43,25 @@ public class PostsService {
 
         return new PostsResponseDTO(entity);
     }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDTO> findAllDesc(){
+
+        return postsRepository.findAllDesc().stream()
+                .map(posts -> new PostsListResponseDTO(posts))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id){
+
+        Optional<Posts> result = postsRepository.findById(id);
+        if(result.isPresent()){
+            Posts posts = result.get();
+
+            postsRepository.delete(posts);
+        }
+    }
+
+
 }
